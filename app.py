@@ -37,6 +37,7 @@ for i, r in enumerate(rows):
               <div style='font-size:1.2rem'>{r.display_value}</div>
               <div style='margin-top:6px'>{status_badge(r.status)}</div>
               <div style='font-size:0.8rem;color:#777;margin-top:6px'>기준일: {r.latest_date or 'N/A'}</div>
+              <div style='font-size:0.78rem;color:#9a6b00;margin-top:4px'>{r.note if '데이터 지연' in (r.note or '') else ''}</div>
             </div>
             """,
             unsafe_allow_html=True,
