@@ -40,3 +40,12 @@ FRED_SERIES: Dict[str, str] = {
     "iorb": "IORB",  # TODO: verify availability/definition in your FRED tenant if request fails
     "mmf_total_assets": "MMMFFAQ027S",  # TODO: confirm preferred MMF total assets series for your workflow
 }
+
+
+# Prefer actively updated series and keep deprecated fallback for resilience.
+FRED_SERIES_CANDIDATES: Dict[str, list[str]] = {
+    "reserve_balances": [
+        "RESBALNS",  # preferred: actively updated reserve balances
+        "WRESBAL",   # deprecated/discontinued around 2020; kept only as fallback marker
+    ],
+}

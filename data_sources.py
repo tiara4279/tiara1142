@@ -122,3 +122,33 @@ def fetch_fear_greed_optional(timeout: int = 8) -> Dict[str, Optional[float]]:
             "ok": False,
             "error": f"optional source unavailable: {e}",
         }
+
+
+def fetch_fred_first_available(
+    series_ids: list[str],
+    config: AppConfig,
+    previous_points: int = 2,
+    max_age_days: Optional[int] = None,
+) -> Dict[str, Optional[float]]:
+    """Try multiple series IDs and return the first fresh, valid one."""
+    last_error: Optional[str] = None
+    for sid in series_ids:
+        result = fetch_fred_latest(
+            series_id=sid,
+            config=config,
+            previous_points=previous_points,
+            max_age_days=max_age_days,
+        )
+        if result.get("ok"):
+            result["series_id"] = sid
+            return result
+        last_error = result.get("error") or f"no data for {sid}"
+
+    return {
+        "latest": None,
+        "previous": None,
+        "date": None,
+        "ok": False,
+        "error": last_error or "No valid series candidates",
+        "series_id": None,
+    }

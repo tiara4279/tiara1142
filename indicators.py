@@ -6,8 +6,8 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Dict, List, Optional
 
-from config import AppConfig, FRED_SERIES
-from data_sources import fetch_fear_greed_optional, fetch_fred_latest
+from config import AppConfig, FRED_SERIES, FRED_SERIES_CANDIDATES
+from data_sources import fetch_fear_greed_optional, fetch_fred_first_available, fetch_fred_latest
 from utils import fmt_value, week_delta
 
 
@@ -182,7 +182,7 @@ def build_indicators(config: AppConfig) -> List[IndicatorRow]:
     vix = fetch_fred_latest(FRED_SERIES["vix"], config, max_age_days=10)
     yc = fetch_fred_latest(FRED_SERIES["yield_curve_10y2y"], config, max_age_days=14)
     walcl = fetch_fred_latest(FRED_SERIES["fed_balance_sheet"], config, max_age_days=35)
-    reserves = fetch_fred_latest(FRED_SERIES["reserve_balances"], config, max_age_days=35)
+    reserves = fetch_fred_first_available(FRED_SERIES_CANDIDATES["reserve_balances"], config, max_age_days=35)
     rrp = fetch_fred_latest(FRED_SERIES["rrp"], config, max_age_days=14)
     tga = fetch_fred_latest(FRED_SERIES["tga"], config, max_age_days=35)
     hy = fetch_fred_latest(FRED_SERIES["hy_spread"], config, max_age_days=14)
@@ -202,11 +202,12 @@ def build_indicators(config: AppConfig) -> List[IndicatorRow]:
     rows.append(_row("VIX", vix["latest"], "일간", "FRED", vix["date"]))
     rows.append(_row("장단기 금리차 (10Y-2Y)", yc["latest"], "일간", "FRED", yc["date"], suffix="%"))
     rows.append(_row("연준 대차대조표", walcl_b, "주간", "FRED", walcl["date"], note="WALCL 백만→십억 달러 변환", suffix="B"))
-    rows.append(_row("지급준비금", reserves_b, "주간", "FRED", reserves["date"], note="RESBALNS 백만→십억 달러 변환", suffix="B"))
+    reserve_sid = reserves.get("series_id") or FRED_SERIES["reserve_balances"]
+    rows.append(_row("지급준비금", reserves_b, "주간", "FRED", reserves["date"], note=f"{reserve_sid} 백만→십억 달러 변환", suffix="B"))
     rows.append(_row("역레포(RRP)", rrp["latest"], "일간", "FRED", rrp["date"], suffix="B"))
     rows.append(_row("TGA", tga_b, "일간/주간", "FRED", tga["date"], note="WTREGEN 백만→십억 달러 변환", suffix="B"))
 
-    rows.append(_row("지급준비금 주간 증감", week_delta(reserves_b, reserves_prev_b), "주간", "FRED", reserves["date"], suffix="B"))
+    rows.append(_row("지급준비금 주간 증감", week_delta(reserves_b, reserves_prev_b), "주간", "FRED", reserves["date"], note=f"기준 시리즈: {reserve_sid}", suffix="B"))
     rows.append(_row("TGA 주간 증감", week_delta(tga_b, tga_prev_b), "주간", "FRED", tga["date"], suffix="B"))
 
     mmf_b = to_billions(mmf["latest"], "million")
