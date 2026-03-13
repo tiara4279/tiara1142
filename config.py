@@ -30,7 +30,7 @@ FRED_SERIES: Dict[str, str] = {
     "vix": "VIXCLS",  # CBOE Volatility Index: VIX
     "yield_curve_10y2y": "T10Y2Y",  # 10-Year Treasury Constant Maturity Minus 2-Year
     "fed_balance_sheet": "WALCL",  # Assets: Total Assets, Weekly Level
-    "reserve_balances": "WRESBAL",  # Reserve balances at Federal Reserve Banks, weekly level
+    "reserve_balances": "RESBALNS",  # Reserve balances with Federal Reserve Banks (updated weekly)
     "rrp": "RRPONTSYD",  # Overnight Reverse Repurchase Agreements: Treasury Securities Sold by the Fed
     "tga": "WTREGEN",  # U.S. Treasury General Account (commonly published in millions)
     "hy_spread": "BAMLH0A0HYM2",  # ICE BofA US High Yield Index Option-Adjusted Spread

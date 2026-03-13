@@ -202,19 +202,21 @@ def build_indicators(config: AppConfig) -> List[IndicatorRow]:
     rows.append(_row("VIX", vix["latest"], "일간", "FRED", vix["date"]))
     rows.append(_row("장단기 금리차 (10Y-2Y)", yc["latest"], "일간", "FRED", yc["date"], suffix="%"))
     rows.append(_row("연준 대차대조표", walcl_b, "주간", "FRED", walcl["date"], note="WALCL 백만→십억 달러 변환", suffix="B"))
-    rows.append(_row("지급준비금", reserves_b, "주간", "FRED", reserves["date"], note="WRESBAL 백만→십억 달러 변환", suffix="B"))
+    rows.append(_row("지급준비금", reserves_b, "주간", "FRED", reserves["date"], note="RESBALNS 백만→십억 달러 변환", suffix="B"))
     rows.append(_row("역레포(RRP)", rrp["latest"], "일간", "FRED", rrp["date"], suffix="B"))
     rows.append(_row("TGA", tga_b, "일간/주간", "FRED", tga["date"], note="WTREGEN 백만→십억 달러 변환", suffix="B"))
 
     rows.append(_row("지급준비금 주간 증감", week_delta(reserves_b, reserves_prev_b), "주간", "FRED", reserves["date"], suffix="B"))
     rows.append(_row("TGA 주간 증감", week_delta(tga_b, tga_prev_b), "주간", "FRED", tga["date"], suffix="B"))
 
-    rows.append(_row("MMF 총 잔액", mmf["latest"], "저빈도(월/분기 가능)", "FRED(optional)", mmf["date"], note="저빈도/시리즈 변경 가능", suffix="B"))
+    mmf_b = to_billions(mmf["latest"], "million")
+    mmf_prev_b = to_billions(mmf["previous"], "million")
+    rows.append(_row("MMF 총 잔액", mmf_b, "저빈도(월/분기 가능)", "FRED(optional)", mmf["date"], note="저빈도/시리즈 변경 가능, 백만→십억 달러 변환", suffix="B"))
 
-    mmf_vs_rrp = None if mmf["latest"] is None or rrp["latest"] is None else mmf["latest"] - rrp["latest"]
+    mmf_vs_rrp = None if mmf_b is None or rrp["latest"] is None else mmf_b - rrp["latest"]
     rows.append(_row("MMF vs RRP", mmf_vs_rrp, "혼합(저빈도+일간)", "Derived(optional)", _older_date(mmf["date"], rrp["date"]), note="혼합 주기: 더 오래된 기준일 사용", suffix="B"))
 
-    rows.append(_row("MMF 주간 증감", week_delta(mmf["latest"], mmf["previous"]), "저빈도", "FRED(optional)", mmf["date"], note="저빈도라 N/A 가능", suffix="B"))
+    rows.append(_row("MMF 주간 증감", week_delta(mmf_b, mmf_prev_b), "저빈도", "FRED(optional)", mmf["date"], note="저빈도라 N/A 가능", suffix="B"))
     rows.append(_row("하이일드 스프레드", hy["latest"], "일간", "FRED", hy["date"], suffix="%"))
     rows.append(_row("금융스트레스지수", stress["latest"], "주간", "FRED", stress["date"]))
 

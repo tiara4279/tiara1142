@@ -81,4 +81,4 @@ streamlit run app.py
 - FRED 조회 시 `observation_end=today`를 사용하고, 지표별 허용 지연일(`max_age_days`) 내 관측치만 채택합니다.
 - 파생 지표(SOFR/EFFR, SOFR/IORB, MMF vs RRP)는 구성요소 중 **더 오래된 날짜**를 기준일로 표시해 날짜 과대평가를 방지합니다.
 - 허용 지연일을 초과하면 `데이터 지연` 경고(주의) 또는 `N/A`로 자동 강등됩니다.
-- 금액형 핵심 지표 중 `WALCL`, `WRESBAL`, `WTREGEN`은 백만 달러 값을 십억 달러(B)로 변환해 표기합니다.
+- 금액형 핵심 지표 중 `WALCL`, `RESBALNS`, `WTREGEN`은 백만 달러 값을 십억 달러(B)로 변환해 표기합니다.
