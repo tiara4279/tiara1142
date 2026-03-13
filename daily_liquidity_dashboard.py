@@ -17,6 +17,8 @@ OUT_DIR = ROOT / "docs"
 DATA_DIR = ROOT / "data"
 JSON_PATH = DATA_DIR / "latest_metrics.json"
 DOCS_JSON_PATH = OUT_DIR / "latest_metrics.json"
+PUBLIC_DIR = ROOT / "public"
+PUBLIC_JSON_PATH = PUBLIC_DIR / "latest_metrics.json"
 
 
 @dataclass
@@ -156,9 +158,9 @@ def render_html(payload: dict) -> str:
 
 
 def write_support_files(html: str) -> None:
-    for target in [ROOT / "404.html", OUT_DIR / "404.html"]:
+    for target in [ROOT / "404.html", OUT_DIR / "404.html", PUBLIC_DIR / "404.html"]:
         target.write_text(html, encoding="utf-8")
-    for target in [ROOT / ".nojekyll", OUT_DIR / ".nojekyll"]:
+    for target in [ROOT / ".nojekyll", OUT_DIR / ".nojekyll", PUBLIC_DIR / ".nojekyll"]:
         target.write_text("", encoding="utf-8")
 
 
@@ -170,12 +172,15 @@ def main() -> None:
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+    PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
 
     html = render_html(payload)
     (ROOT / "index.html").write_text(html, encoding="utf-8")
     (OUT_DIR / "index.html").write_text(html, encoding="utf-8")
+    (PUBLIC_DIR / "index.html").write_text(html, encoding="utf-8")
     JSON_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     DOCS_JSON_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    PUBLIC_JSON_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     write_support_files(html)
 
 

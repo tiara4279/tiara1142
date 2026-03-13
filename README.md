@@ -7,9 +7,9 @@
 3. 미리보기 URL이 `/`가 아니라 다른 경로로 열릴 때
 
 이 저장소는 위 문제를 줄이기 위해 아래를 자동 생성합니다.
-- `index.html` + `docs/index.html`
-- `404.html` + `docs/404.html`
-- `.nojekyll` + `docs/.nojekyll`
+- `index.html` + `docs/index.html` + `public/index.html`
+- `404.html` + `docs/404.html` + `public/404.html`
+- `.nojekyll` + `docs/.nojekyll` + `public/.nojekyll`
 
 그래서 `/` 또는 `/index.html` 어느 경로로 열어도 화면이 보이도록 구성했습니다.
 
@@ -38,7 +38,8 @@ python daily_liquidity_dashboard.py
 ## 생성 파일
 - `index.html`, `404.html`, `.nojekyll`
 - `docs/index.html`, `docs/404.html`, `docs/.nojekyll`
-- `data/latest_metrics.json`, `docs/latest_metrics.json`
+- `public/index.html`, `public/404.html`, `public/.nojekyll`
+- `data/latest_metrics.json`, `docs/latest_metrics.json`, `public/latest_metrics.json`
 
 ## 자동 갱신
 `.github/workflows/daily-dashboard.yml`이 매일 UTC 22:10(한국시간 07:10) 실행됩니다.
