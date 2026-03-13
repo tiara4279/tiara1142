@@ -49,3 +49,5 @@ FRED_SERIES_CANDIDATES: Dict[str, list[str]] = {
         "WRESBAL",   # deprecated/discontinued around 2020; kept only as fallback marker
     ],
 }
+
+APP_TITLE = "미국 유동성·리스크 대시보드"

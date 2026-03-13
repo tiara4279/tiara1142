@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import requests
 
@@ -125,12 +125,15 @@ def fetch_fear_greed_optional(timeout: int = 8) -> Dict[str, Optional[float]]:
 
 
 def fetch_fred_first_available(
-    series_ids: list[str],
+    series_ids: List[str],
     config: AppConfig,
     previous_points: int = 2,
     max_age_days: Optional[int] = None,
 ) -> Dict[str, Optional[float]]:
-    """Try multiple series IDs and return the first fresh, valid one."""
+    """Try multiple series IDs and return the first fresh, valid one.
+
+    Only returns a series that satisfies freshness constraints.
+    """
     last_error: Optional[str] = None
     for sid in series_ids:
         result = fetch_fred_latest(

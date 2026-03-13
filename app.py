@@ -11,6 +11,7 @@ st.set_page_config(page_title="미국 유동성·리스크 대시보드", layout
 
 st.title("미국 유동성·리스크 대시보드")
 st.caption("실시간이 아닌 최신 공개 데이터(latest available) 기준 대시보드")
+st.caption("데이터 지연 경고는 각 카드/표 비고에 표시됩니다.")
 
 config = get_config()
 rows = build_indicators(config)

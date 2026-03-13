@@ -203,6 +203,7 @@ def build_indicators(config: AppConfig) -> List[IndicatorRow]:
     rows.append(_row("장단기 금리차 (10Y-2Y)", yc["latest"], "일간", "FRED", yc["date"], suffix="%"))
     rows.append(_row("연준 대차대조표", walcl_b, "주간", "FRED", walcl["date"], note="WALCL 백만→십억 달러 변환", suffix="B"))
     reserve_sid = reserves.get("series_id") or FRED_SERIES["reserve_balances"]
+    # 중점 점검 항목: 지급준비금/지급준비금 주간 증감/TGA/TGA 주간 증감
     rows.append(_row("지급준비금", reserves_b, "주간", "FRED", reserves["date"], note=f"{reserve_sid} 백만→십억 달러 변환", suffix="B"))
     rows.append(_row("역레포(RRP)", rrp["latest"], "일간", "FRED", rrp["date"], suffix="B"))
     rows.append(_row("TGA", tga_b, "일간/주간", "FRED", tga["date"], note="WTREGEN 백만→십억 달러 변환", suffix="B"))
