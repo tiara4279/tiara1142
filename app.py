@@ -3,13 +3,13 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
-from config import get_config
+from config import APP_TITLE, get_config
 from indicators import build_indicators, to_table_dict
 from utils import now_utc_str, status_badge
 
-st.set_page_config(page_title="미국 유동성·리스크 대시보드", layout="wide")
+st.set_page_config(page_title=APP_TITLE, layout="wide")
 
-st.title("미국 유동성·리스크 대시보드")
+st.title(APP_TITLE)
 st.caption("실시간이 아닌 최신 공개 데이터(latest available) 기준 대시보드")
 st.caption("데이터 지연 경고는 각 카드/표 비고에 표시됩니다.")
 
